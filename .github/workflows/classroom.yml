@@ -19,8 +19,20 @@ jobs:
       # Setup outputs for update-points-bar job below
       points: ${{ steps.autograder.outputs.points }}
     steps:
+    - name: Set Locale
+      run: |
+        sudo apt-get update && sudo apt-get install tzdata locales -y   
+        sudo locale-gen ru_RU.UTF-8
+        sudo locale-gen ru_RU
+        locale -a
+
     - name: Checkout code
       uses: actions/checkout@v4
+
+    - name: Run ShellCheck
+      uses: ludeeus/action-shellcheck@master
+      with:
+        scandir: './.test'
 
     - name: 'Task #1'
       id: task-1
